@@ -41,18 +41,19 @@ public class robots {
                     map[i] = currentRow.toCharArray();
                 }
 
-                int pathCount = recursiveFindPath(map, 0, 0, false);
-                int invalidRun = recursiveFindPath(map, 0, 0, true);
+                int pathCount = findPath(map);
                 if(pathCount>0) { System.out.println(pathCount);}
-                else if(invalidRun!=0) {System.out.println("THE GAME IS A LIE");}
-                else{System.out.println("INCONCEIVABLE");}
+                else {
+                    if(illegalFindPath(map)!=0) {System.out.println("THE GAME IS A LIE");}
+                    else{System.out.println("INCONCEIVABLE");}
+                }
 
-//                //Used for printing matrix content
-//                for (int i = 0; i < map.length; i++) {
-//                    for (int j = 0; j < map[i].length; j++)
-//                        System.out.print(map[i][j] + " ");
-//                    System.out.println();
-//                }
+                //Used for printing matrix content
+                for (int i = 0; i < map.length; i++) {
+                    for (int j = 0; j < map[i].length; j++)
+                        System.out.print(map[i][j] + " ");
+                    System.out.println();
+                }
             }
         } catch(IOException e) {
             System.out.println("Problem reading map");
@@ -60,8 +61,19 @@ public class robots {
         }
     }
 
+    //calls recursiveFindPath() without left and upward movement enabled
+    static int findPath(char[][] map) {
+        char[][] memoGrid = new char[map.length][map.length];
+        return recursiveFindPath(map, 0, 0, false);
+    }
+
+    //calls recursiveFindPath() with cheats enabled
+    static int illegalFindPath(char[][] map) {
+        char[][] memoGrid = new char[map.length][map.length];
+        return recursiveFindPath(map, 0, 0, true);
+    }
     /*
-    Problem: must consider whether going in the same direction is a new path
+    Problem: should we consider whether robot is going in the same direction is a new path?
      */
     static int recursiveFindPath(char[][] map, int rowIndex, int columnIndex, boolean leftAndUpEnabled) {
         //Robot has moved out of bounds (off the map), go back to where you came!
