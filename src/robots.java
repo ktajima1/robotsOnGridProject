@@ -100,8 +100,9 @@ public class robots {
         }
         if(map[rowIndex][columnIndex]=='.') {
             if(memoGrid[rowIndex][columnIndex]==0) {    //if pathCount as not been calculated yet for this space yet, calculate it
-                long pathCountSum = recursiveGetPathCount(map, memoGrid, rowIndex-1, columnIndex)
-                        + recursiveGetPathCount(map, memoGrid, rowIndex, columnIndex-1);
+                long pathCountSum = (long) (recursiveGetPathCount(map, memoGrid, rowIndex-1, columnIndex)
+                        + recursiveGetPathCount(map, memoGrid, rowIndex, columnIndex-1)
+                        % (Math.pow(2,31)-1));
                 memoGrid[rowIndex][columnIndex] = pathCountSum;
                 return pathCountSum;
             }
